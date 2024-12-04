@@ -59,7 +59,7 @@ Vous pouvez ajuster la version Python dans `pyproject.toml` (par exemple `python
 
 1. **Cloner le projet** :
    ```bash
-   git clone <URL_DE_VOTRE_DÉPÔT>
+   git clone https://github.com/AbysseDenier/projet_systemes_repartis.git
    cd eskinazi-bgd701
 
 2. **Préparer les fichiers** :
