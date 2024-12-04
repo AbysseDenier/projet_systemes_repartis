@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "eskinazi-bgd701"
+version = "0.1.0"
+description = "Projet pour le cours de Systèmes Répartis (BGD_701) de Monsieur Remi Sharrock"
+authors = ["Etienne Eskinazi"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
