@@ -7,7 +7,7 @@ import time
 FICHIER_MESSAGE = "input_message.txt"
 FICHIER_RESULTATS = "final_aggregated_results.json"
 FICHIER_RESULTATS_AMDAHL = "resultats_amdahl.json"
-NOMBRE_MACHINES = 1  # Nombre de machines utilisées pour le calcul parallèle
+NOMBRE_MACHINES = 1  # Nombre de machines utilisées pour le calcul parallèle (seulement le master, car pas de calculs parallèles)
 
 # Mesure du temps de début
 start_time = time.perf_counter()
