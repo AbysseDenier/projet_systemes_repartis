@@ -4,12 +4,14 @@ import threading
 import struct
 import re
 import os
+import time
 
 # CONSTANTES GLOBALES
 PORT_PRINCIPAL = 3463
 FICHIER_MACHINES = "machines.txt"
 FICHIER_MESSAGE = "input_message.txt"
 FICHIER_RESULTATS = "final_aggregated_results.json"
+FICHIER_RESULTATS_AMDAHL = "resultats_amdahl.json"
 
 
 # Lecture du message à envoyer depuis un fichier texte
@@ -321,10 +323,15 @@ def gerer_communication_avec_workers(connexions, machines_json, results_data):
 # SCRIPT PRINCIPAL
 ###################################################
 
+# Mesure du temps de début pour la communication avec les workers
+start_time = time.perf_counter()
+
 # Lecture du fichier machines.txt pour obtenir la liste des workers
 with open(FICHIER_MACHINES, 'r') as file:
     liste_machines = [line.strip() for line in file.readlines()]
 
+# Nombre de machines
+NOMBRE_MACHINES = len(liste_machines) + 1  # on compte le master
 machines_json = json.dumps(liste_machines)
 connexions = connexion_aux_workers(liste_machines)
 
@@ -369,5 +376,31 @@ try:
     print(f"[Master] Fichier de résultats final enregistré dans {os.path.abspath(FICHIER_RESULTATS)}")
 except Exception as e:
     print(f"[Master] Erreur lors de l'écriture du fichier final : {e}")
+
+
+# Mesure du temps de fin
+end_time = time.perf_counter()
+
+# Temps écoulé
+elapsed_time = end_time - start_time
+print(f"[Master] Temps d'exécution du script avec {NOMBRE_MACHINES} machines : {elapsed_time:.4f} secondes")
+
+# Sauvegarde des résultats de performance dans resultats_amdahl.json
+try:
+    resultats_amdahl = {}
+    if os.path.exists(FICHIER_RESULTATS_AMDAHL):
+        with open(FICHIER_RESULTATS_AMDAHL, "r", encoding="utf-8") as f:
+            resultats_amdahl = json.load(f)
+
+    # Mise à jour des résultats
+    resultats_amdahl[str(NOMBRE_MACHINES)] = {
+        "elapsed_time": elapsed_time
+    }
+
+    with open(FICHIER_RESULTATS_AMDAHL, "w", encoding="utf-8") as f:
+        json.dump(resultats_amdahl, f, ensure_ascii=False, indent=4)
+    print(f"[Master] Résultats de performance enregistrés dans {os.path.abspath(FICHIER_RESULTATS_AMDAHL)}")
+except Exception as e:
+    print(f"[Master] Erreur lors de l'écriture du fichier de résultats Amdahl : {e}")
 
 print("[Master] Fin du script.")
