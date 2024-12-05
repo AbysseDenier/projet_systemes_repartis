@@ -47,8 +47,9 @@ L’ensemble du code utilise des sockets TCP pour la communication, en respectan
 - `resultats_amdahl.json` : Le fichier regroupant les temps d'exécution pour un nombre de machines spécifié dans `machines.txt`.
 - `pyproject.toml` : Fichier de configuration Poetry pour la gestion des dépendances et de l’environnement du projet.
 - `deploy_script.sh` : Fichier bash de lancement des scripts script_worker sur les différents workers.
-- `script_master.py` et `script_worker.py` (ce dernier dans dossierAdeployer) sont respectivement les codes Python du master et des workers.
-- `script_master_sequentiel.py` : code du master sans parallélisation (permet d'avoir une référence pour le calcul de la loi d'Amdahl).
+- `script_master.py` et `script_worker.py` (ce dernier dans dossierAdeployer) : Ce sont les codes Python du master et des workers.
+- `script_master_sequentiel.py` : Code du master sans parallélisation (permet d'avoir une référence pour le calcul de la loi d'Amdahl).
+- `loi_amdahl.png` : Graphique exposant la loi d'Amdahl à notre cas (elle n'est pas du tout vérifiée...).
 
 ## Pré-requis
 
@@ -94,3 +95,6 @@ Le résultat final agrégé se trouvera dans final_aggregated_results.json. Et l
 Le résultat final agrégé se trouvera dans final_aggregated_results.json. Et les temps d'exécution dans le fichier resultats_amdahl.json.
 
 --> Vous pouvez répéter les étapes 5 à 8 en changeant le nombre de machines dans machines.txt pour avoir différentes mesures de temps d'exécution dans resultats_amdahl.json.
+
+## Conclusion
+Ce projet ne permet pas de vérifier la loi d'Amdahl. Lorsque le nombre de machines permettant la parallélisation augmente, le temps d'exécution augmente aussi (et le speed-up baisse). Cela peut être dû au fait que le code génère beaucoup de print dans la console pour les debugs ce qui n'est pas optimal pour réduire les temps d'exécution. il est également possible que l'implémentation de l'algorithme de Map Reduce en Python ne soit pas optimale, Python ayant certaines limitations en termes de performance et de parallélisation. Pour améliorer ce projet, on pourrait réduire les instructions de débogage ou utiliser d'autres langages et environnements mieux adaptés à la parallélisation, tels que Java avec Hadoop, afin de mieux tirer parti des ressources disponibles.
