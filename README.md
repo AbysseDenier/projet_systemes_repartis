@@ -49,7 +49,7 @@ L’ensemble du code utilise des sockets TCP pour la communication, en respectan
 - `deploy_script.sh` : Fichier bash de lancement des scripts script_worker sur les différents workers.
 - `script_master.py` et `script_worker.py` (ce dernier dans dossierAdeployer) : Ce sont les codes Python du master et des workers.
 - `script_master_sequentiel.py` : Code du master sans parallélisation (permet d'avoir une référence pour le calcul de la loi d'Amdahl).
-- `loi_amdahl.png` : Graphique exposant la loi d'Amdahl à notre cas (elle n'est pas du tout vérifiée...).
+- `loi_amdahl.png` : Graphique exposant la loi d'Amdahl à notre cas (elle n'est pas du tout vérifiée...). Peut être facilement généré à partir du fichier `resultats_amdahl.json`.
 
 ## Pré-requis
 
