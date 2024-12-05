@@ -2,7 +2,7 @@
 
 # Projet MapReduce en Python pour le cours BGD_701
 
-Ce projet illustre la mise en œuvre d’un système MapReduce distribué en Python, développé dans le cadre du cours de Systèmes Répartis (BGD_701) de Monsieur Rémi Sharrock. L’objectif est de fournir un exemple concret de répartition de tâches de traitement de texte (comptage de mots) entre un **master** et plusieurs **workers**, en simulant une phase de Map/Shuffle/Reduce.
+Ce projet illustre la mise en œuvre d’un système MapReduce distribué en Python, développé dans le cadre du cours de Systèmes Répartis (BGD_701) de Monsieur Rémi Sharrock. L’objectif est de fournir un exemple concret de répartition de tâches de traitement de texte (comptage de mots) entre un **master** et plusieurs **workers**, en simulant une phase de Map/Shuffle/Reduce. On cherche, en outre, à vérifier la loi d'Amdahl.
 
 ## Description du Projet
 
@@ -44,9 +44,11 @@ L’ensemble du code utilise des sockets TCP pour la communication, en respectan
 - `machines.txt` : Contient la liste des adresses ou noms des machines workers.
 - `input_message.txt` : Le message complet à traiter.
 - `final_aggregated_results.json` : Le fichier final d’agrégation des résultats est généré par l'exécution des scripts.
+- `resultats_amdahl.json` : Le fichier regroupant les temps d'exécution pour un nombre de machines spécifié dans `machines.txt`.
 - `pyproject.toml` : Fichier de configuration Poetry pour la gestion des dépendances et de l’environnement du projet.
 - `deploy_script.sh` : Fichier bash de lancement des scripts script_worker sur les différents workers.
-- Le code Python du master et des workers (script_master et script_worker).
+- `script_master.py` et `script_worker.py` (ce dernier dans dossierAdeployer) sont respectivement les codes Python du master et des workers.
+- `script_master_sequentiel.py` : code du master sans parallélisation (permet d'avoir une référence pour le calcul de la loi d'Amdahl).
 
 ## Pré-requis
 
@@ -66,20 +68,29 @@ Vous pouvez ajuster la version Python dans `pyproject.toml` (par exemple `python
     Modifier machines.txt pour lister les workers.
     Placer le texte à traiter dans input_message.txt.
 
-3. **Lancer le script bash** qui exécute le script_worker.py sur chaque worker :
+3. **Lancer le script master_sequentiel** qui exécute le calcul du Map/Reduce sur une seule machine :
+    ```bash
+    python3 script_master_sequentiel.py
+
+4. **Résultats** : 
+Le résultat final agrégé se trouvera dans final_aggregated_results.json. Et les temps d'exécution dans le fichier resultats_amdahl.json.
+
+5. **Lancer le script bash** qui exécute le script_worker.py sur chaque worker :
     ```bash
     bash deploy_script.sh
 
-4. **Lancer le master** :
+6. **Lancer le master** :
     ```bash
     python3 script_master.py
 
-5. **Exécution du MapReduce** : Une fois tous les workers connectés, le master enverra les étapes successives :
+7. **Exécution du MapReduce** : Une fois tous les workers connectés, le master enverra les étapes successives :
     Envoi des morceaux de texte (SPLIT)
     Lancement du MAP/SHUFFLE
     Demande de sauvegarde (SAVE)
     Récupération des chemins de fichiers résultats
     Agrégation finale (REDUCE)
 
-6. **Résultats** : 
-Le résultat final agrégé se trouvera dans final_aggregated_results.json.
+8. **Résultats** : 
+Le résultat final agrégé se trouvera dans final_aggregated_results.json. Et les temps d'exécution dans le fichier resultats_amdahl.json.
+
+--> Vous pouvez répéter les étapes 5 à 8 en changeant le nombre de machines dans machines.txt pour avoir différentes mesures de temps d'exécution dans resultats_amdahl.json.
