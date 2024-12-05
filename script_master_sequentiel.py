@@ -9,6 +9,11 @@ FICHIER_RESULTATS = "final_aggregated_results.json"
 FICHIER_RESULTATS_AMDAHL = "resultats_amdahl.json"
 NOMBRE_MACHINES = 1  # Nombre de machines utilisées pour le calcul parallèle (seulement le master, car pas de calculs parallèles)
 
+# Réinitialisation du fichier de résultats Amdahl
+if os.path.exists(FICHIER_RESULTATS_AMDAHL):
+    os.remove(FICHIER_RESULTATS_AMDAHL)
+    print(f"[Master] Fichier {FICHIER_RESULTATS_AMDAHL} supprimé pour réinitialisation.")
+
 # Mesure du temps de début
 start_time = time.perf_counter()
 
@@ -88,9 +93,6 @@ print(f"[Master] Temps d'exécution du script : {elapsed_time:.4f} secondes")
 # Sauvegarde des résultats de performance dans resultats_amdahl.json
 try:
     resultats_amdahl = {}
-    if os.path.exists(FICHIER_RESULTATS_AMDAHL):
-        with open(FICHIER_RESULTATS_AMDAHL, "r", encoding="utf-8") as f:
-            resultats_amdahl = json.load(f)
 
     # Mise à jour des résultats
     resultats_amdahl[str(NOMBRE_MACHINES)] = {
